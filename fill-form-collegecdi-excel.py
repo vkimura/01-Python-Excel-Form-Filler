@@ -39,7 +39,7 @@ indexProgram = columns.index("Program")
 indexLandingPage = columns.index("Landing Page")
 indexInLeadsTable = columns.index("In Leads Table")
 indexMyCollegeLeads = columns.index("MyCollegeLeads.ca")
-setRowNumber = 4    # start at row 5
+setRowNumber = 3    # start at row 5
 
 print(indexURL)
 
@@ -85,27 +85,43 @@ elif (siteName == "collegecdi"):
 #//*[@id="int-no2"] - no  (CollegeCDI XPath)
 
 #click on the "Do you have a study permit in Canada?" button - column 6 in Excel
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CDICollege XPath)
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CDICollege XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CDICollege XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CDICollege XPath)
 
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CollegeCDI XPath)
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CollegeCDI XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CollegeCDI XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CollegeCDI XPath)
+
+time.sleep(2)    
+
+studyPermitVal = sheet.cell_value(setRowNumber, indexStudyPermit)
+if (studyPermitVal.lower() == "yes"):
+    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1]').click()
+elif (studyPermitVal.lower() == "no"):
+    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2]').click()
 
 #click on the "Do you have a refugee status in Canada?" button - column 7 in Excel
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CDICollege XPath)
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CDICollege XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CDICollege XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CDICollege XPath)
 
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CollegeCDI XPath)
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CollegeCDI XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CollegeCDI XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CollegeCDI XPath)
+
+time.sleep(2)    
+
+refugeeStatusVal = sheet.cell_value(setRowNumber, indexRefugeeStatus)
+if (refugeeStatusVal.lower() == "yes"):
+    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1]').click()
+elif (refugeeStatusVal.lower() == "no"):
+    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2]').click()
 
 time.sleep(2)
 
 #click on "Do you have a Canadian address?" button - column 8 in Excel
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[1] - yes (CDICollege XPath)
-#//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[2] - no (CDICollege XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[1] - yes (CDICollege XPath)
+    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[2] - no (CDICollege XPath)
 
-#//*[@id="res-yes2"] - yes (CollegeCDI XPath)
-#web.find_element_by_xpath('//*[@id="res-no2"]').click() # click on the "I am not a resident of Canada" button
+    #//*[@id="res-yes2"] - yes (CollegeCDI XPath)
+    #web.find_element_by_xpath('//*[@id="res-no2"]').click() # click on the "I am not a resident of Canada" button
 
 if (siteName == "cdicollege"):
     if (sheet.cell_value(setRowNumber, indexResideInCanada).lower() == "yes"):
@@ -192,7 +208,7 @@ selectProgram.select_by_visible_text(sheet.cell_value(setRowNumber, indexProgram
 
 time.sleep(2)
 
-web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/button').click() # click on the "Submit" button
+#web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/button').click() # click on the "Submit" button
 
 time.sleep(10)
 
