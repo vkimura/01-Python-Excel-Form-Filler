@@ -39,7 +39,7 @@ indexProgram = columns.index("Program")
 indexLandingPage = columns.index("Landing Page")
 indexInLeadsTable = columns.index("In Leads Table")
 indexMyCollegeLeads = columns.index("MyCollegeLeads.ca")
-setRowNumber = 10    # start at row 5
+setRowNumber = 11    # start at row 5
 setSleepTimeLong = 2
 setSleepTime = 1
 
