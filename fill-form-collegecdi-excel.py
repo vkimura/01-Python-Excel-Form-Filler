@@ -5,6 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from xlrd import open_workbook
 
+options = webdriver.ChromeOptions()
+options.add_experimental_option("detach", True)
+
 wb = open_workbook("C:\\Users\\vkimura\\Documents\\Projects\\2022\\05\\09\\2022-06-08-1-colon-20PM.xls")
 sheet = wb.sheet_by_index(0) # sheet 0
 # sheet.cell_value(0, i)
@@ -45,12 +48,12 @@ setSleepTime = 1
 
 print(indexURL)
 
-web = webdriver.Chrome()
+web = webdriver.Chrome(options=options, executable_path="C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\Python39_64\\chromedriver.exe")
 # column 2 in Excel
 #web.get('https://www.collegecdi.loc/')
 # web.get(sheet.cell_value(0, 2))
 url = sheet.cell_value(setRowNumber, indexURL)
-web.get(sheet.cell_value(setRowNumber, indexURL))
+web.get(url)
 
 time.sleep(setSleepTimeLong)
 
@@ -213,11 +216,11 @@ selectProgram.select_by_visible_text(sheet.cell_value(setRowNumber, indexProgram
 #     # select.select_by_visible_text('Gestion de l\'approvisionnement - LCA.FL')
 #     select.select_by_visible_text(sheet.cell_value(setRowNumber, indexProgram))
 
-time.sleep(2)
+#time.sleep(setSleepTime)
 
 #web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/button').click() # click on the "Submit" button
 
-time.sleep(10)
+time.sleep(30)
 
     #web.close()
     #web.quit()
