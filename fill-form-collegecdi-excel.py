@@ -39,7 +39,9 @@ indexProgram = columns.index("Program")
 indexLandingPage = columns.index("Landing Page")
 indexInLeadsTable = columns.index("In Leads Table")
 indexMyCollegeLeads = columns.index("MyCollegeLeads.ca")
-setRowNumber = 3    # start at row 5
+setRowNumber = 10    # start at row 5
+setSleepTimeLong = 2
+setSleepTime = 1
 
 print(indexURL)
 
@@ -50,7 +52,7 @@ web = webdriver.Chrome()
 url = sheet.cell_value(setRowNumber, indexURL)
 web.get(sheet.cell_value(setRowNumber, indexURL))
 
-time.sleep(3)
+time.sleep(setSleepTimeLong)
 
 # web.find_element_by_xpath('//*[@id="tsf"]/div[2]/div[1]/div[1]/div/div[2]/input').send_keys('python')
 # web.find_element_by_xpath('//*[@id="tsf"]/div[2]/div[1]/div[1]/div/div[2]/input').send_keys(Keys.ENTER)
@@ -64,17 +66,18 @@ if (formName == "Demande d'info" or formName =="Request Information"):
 elif (formName == "Inscrivez-vous" or formName =="Apply Now"):
     web.find_element_by_xpath('//*[@id="header-section-v2-id"]/div[1]/div/div/div[2]/a[1]').click() # click on the "Apply Now"/"Inscrivez-vous" button
 
-time.sleep(3)
+time.sleep(setSleepTimeLong)
 
 # click on the "I am an international student" button - column 5 in Excel
 siteName = sheet.cell_value(setRowNumber, indexSite)
+intlStudentVal = sheet.cell_value(setRowNumber, indexIntlStudent)
 if (siteName == "cdicollege"):
-    if (sheet.cell_value(setRowNumber, indexIntlStudent) == "yes"):
+    if (intlStudentVal == "yes"):
         web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[1]/div/label[1]').click()
     else:
         web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[1]/div/label[2]').click()
 elif (siteName == "collegecdi"):
-    if (sheet.cell_value(setRowNumber, indexIntlStudent).lower() == "yes"):
+    if (intlStudentVal.lower() == "yes"):
         web.find_element_by_xpath('//*[@id="int-yes2"]').click()
     else:
         web.find_element_by_xpath('//*[@id="int-no2"]').click()
@@ -84,67 +87,71 @@ elif (siteName == "collegecdi"):
 #web.find_element_by_xpath('//*[@id="int-yes2"]').click()
 #//*[@id="int-no2"] - no  (CollegeCDI XPath)
 
-#click on the "Do you have a study permit in Canada?" button - column 6 in Excel
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CDICollege XPath)
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CDICollege XPath)
 
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CollegeCDI XPath)
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CollegeCDI XPath)
 
-time.sleep(2)    
+time.sleep(setSleepTime)    
 
-studyPermitVal = sheet.cell_value(setRowNumber, indexStudyPermit)
-if (studyPermitVal.lower() == "yes"):
-    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1]').click()
-elif (studyPermitVal.lower() == "no"):
-    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2]').click()
+#if the student is International, then the following other options apply; otherise, the other fields are not displayed.
+if (intlStudentVal == "yes"):
+        
+    #click on the "Do you have a study permit in Canada?" button - column 6 in Excel
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CDICollege XPath)
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CDICollege XPath)
 
-#click on the "Do you have a refugee status in Canada?" button - column 7 in Excel
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CDICollege XPath)
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CDICollege XPath)
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1] - yes (CollegeCDI XPath)
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2] - no (CollegeCDI XPath)
+    studyPermitVal = sheet.cell_value(setRowNumber, indexStudyPermit)
+    if (studyPermitVal.lower() == "yes"):
+        web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[1]').click()
+    elif (studyPermitVal.lower() == "no"):
+        web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[2]/div/label[2]').click()
 
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CollegeCDI XPath)
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CollegeCDI XPath)
+    #click on the "Do you have a refugee status in Canada?" button - column 7 in Excel
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CDICollege XPath)
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CDICollege XPath)
 
-time.sleep(2)    
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1] - yes (CollegeCDI XPath)
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2] - no (CollegeCDI XPath)
 
-refugeeStatusVal = sheet.cell_value(setRowNumber, indexRefugeeStatus)
-if (refugeeStatusVal.lower() == "yes"):
-    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1]').click()
-elif (refugeeStatusVal.lower() == "no"):
-    web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2]').click()
+    time.sleep(setSleepTime)    
 
-time.sleep(2)
+    refugeeStatusVal = sheet.cell_value(setRowNumber, indexRefugeeStatus)
+    if (refugeeStatusVal.lower() == "yes"):
+        web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[1]').click()
+    elif (refugeeStatusVal.lower() == "no"):
+        web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[3]/div/label[2]').click()
 
-#click on "Do you have a Canadian address?" button - column 8 in Excel
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[1] - yes (CDICollege XPath)
-    #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[2] - no (CDICollege XPath)
+    time.sleep(setSleepTime)
 
-    #//*[@id="res-yes2"] - yes (CollegeCDI XPath)
-    #web.find_element_by_xpath('//*[@id="res-no2"]').click() # click on the "I am not a resident of Canada" button
+    #click on "Do you have a Canadian address?" button - column 8 in Excel
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[1] - yes (CDICollege XPath)
+        #//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[2] - no (CDICollege XPath)
 
-if (siteName == "cdicollege"):
-    if (sheet.cell_value(setRowNumber, indexResideInCanada).lower() == "yes"):
-        web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[1]').click() # click on the "yes" button
-    else:
-        web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[2]').click() # click on the "no" button
-elif (siteName == "collegecdi"):
-    if (sheet.cell_value(setRowNumber, indexResideInCanada).lower() == "yes"):
-        web.find_element_by_xpath('//*[@id="res-yes2"]').click() # click on the "yes" button
-    else:
-        web.find_element_by_xpath('//*[@id="res-no2"]').click() # click on the "no" button  
+        #//*[@id="res-yes2"] - yes (CollegeCDI XPath)
+        #web.find_element_by_xpath('//*[@id="res-no2"]').click() # click on the "I am not a resident of Canada" button
 
-time.sleep(1)
+    if (siteName == "cdicollege"):
+        if (sheet.cell_value(setRowNumber, indexResideInCanada).lower() == "yes"):
+            web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[1]').click() # click on the "yes" button
+        else:
+            web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[4]/div/label[2]').click() # click on the "no" button
+    elif (siteName == "collegecdi"):
+        if (sheet.cell_value(setRowNumber, indexResideInCanada).lower() == "yes"):
+            web.find_element_by_xpath('//*[@id="res-yes2"]').click() # click on the "yes" button
+        else:
+            web.find_element_by_xpath('//*[@id="res-no2"]').click() # click on the "no" button  
 
-#check if country list selection is displayed
-strStyleCountryList = web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[5]').get_attribute('style')
-if (strStyleCountryList.find('display: none') == -1):
-    selectCountryList = Select(web.find_element_by_xpath('//*[@id="CountryKey"]')) #can select by name using this variable
-    web.find_element_by_xpath('//*[@id="CountryKey"]').send_keys(sheet.cell_value(setRowNumber, indexCountry))
+    time.sleep(1)
 
-# enter "Canada" in the "Country" field - Country drop down - column 9 in Excel
-# web.find_element_by_xpath('//*[@id="CountryKey"]').send_keys('Canada')
-    # web.find_element_by_xpath('//*[@id="CountryKey"]').send_keys(sheet.cell_value(setRowNumber, indexCountry))
+    #check if country list selection is displayed
+    strStyleCountryList = web.find_element_by_xpath('//*[@id="submitRequestInfo"]/div[2]/div[3]/div[5]').get_attribute('style')
+    if (strStyleCountryList.find('display: none') == -1):
+        selectCountryList = Select(web.find_element_by_xpath('//*[@id="CountryKey"]')) #can select by name using this variable
+        web.find_element_by_xpath('//*[@id="CountryKey"]').send_keys(sheet.cell_value(setRowNumber, indexCountry))
+
+    # enter "Canada" in the "Country" field - Country drop down - column 9 in Excel
+    # web.find_element_by_xpath('//*[@id="CountryKey"]').send_keys('Canada')
+        # web.find_element_by_xpath('//*[@id="CountryKey"]').send_keys(sheet.cell_value(setRowNumber, indexCountry))
 
 time.sleep(1)
 
