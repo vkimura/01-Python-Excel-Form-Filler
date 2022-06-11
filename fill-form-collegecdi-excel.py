@@ -42,7 +42,7 @@ indexProgram = columns.index("Program")
 indexLandingPage = columns.index("Landing Page")
 indexInLeadsTable = columns.index("In Leads Table")
 indexMyCollegeLeads = columns.index("MyCollegeLeads.ca")
-setRowNumber = 11    # start at row 5
+setRowNumber = 57    # start at row 5
 setSleepTimeLong = 2
 setSleepTime = 1
 
@@ -56,6 +56,14 @@ url = sheet.cell_value(setRowNumber, indexURL)
 web.get(url)
 
 time.sleep(setSleepTimeLong)
+
+# https://selenium-python.readthedocs.io/locating-elements.html
+# # username = driver.find_element(By.XPATH, "//form[input/@name='username']")
+# username = driver.find_element(By.XPATH, "//form[@id='loginForm']/input[1]")
+# username = driver.find_element(By.XPATH, "//input[@name='username']")
+# 1. First form element with an input child element with name set to username
+# 2. First input child element of the form element with attribute id set to loginForm
+# 3. First input element with attribute name set to username
 
 # web.find_element_by_xpath('//*[@id="tsf"]/div[2]/div[1]/div[1]/div/div[2]/input').send_keys('python')
 # web.find_element_by_xpath('//*[@id="tsf"]/div[2]/div[1]/div[1]/div/div[2]/input').send_keys(Keys.ENTER)
@@ -72,6 +80,9 @@ elif (formName == "Inscrivez-vous" or formName =="Apply Now"):
 time.sleep(setSleepTimeLong)
 
 # click on the "I am an international student" button - column 5 in Excel
+    #//*[@id="int-yes"] - yes - landing page (CDICollege) - https://www.cdicollege.ca/business-office-administration-online-development-v3/ - template 158
+    #//*[@id="int-no"] - no - landing page (CollegeCDI) - https://www.cdicollege.ca/business-office-administration-online-development-v3/ - template 158
+
 siteName = sheet.cell_value(setRowNumber, indexSite)
 intlStudentVal = sheet.cell_value(setRowNumber, indexIntlStudent)
 if (siteName == "cdicollege"):
@@ -84,13 +95,21 @@ elif (siteName == "collegecdi"):
         web.find_element_by_xpath('//*[@id="int-yes2"]').click()
     else:
         web.find_element_by_xpath('//*[@id="int-no2"]').click()
+elif (siteName == "vccollege"):
+    if (url == "https://www.career.college/"):
+        time.sleep(setSleepTime)
+        if (formName == "lead-form"):
+            web.find_element(By.XPATH, "//div[@class='RequestInfo']").click()
+            time.sleep(setSleepTime)
+            if(intlStudentVal == "yes"):
+                web.find_element(By.XPATH, "//form[@class='lead-form']/label[@for='not_in_canada']").click()
+                time.sleep(setSleepTime)
 
+# //*[@id="int-no"] - https://www.collegecdi.loc/l-gestion-financiere-informatisee-lea.ac/
 # //*[@id="submitRequestInfo"]/div[2]/div[3]/div[1]/div/label[1] - yes (CDICollege XPath)
 # //*[@id="submitRequestInfo"]/div[2]/div[3]/div[1]/div/label[2] - no (CDICollege XPath)
 #web.find_element_by_xpath('//*[@id="int-yes2"]').click()
 #//*[@id="int-no2"] - no  (CollegeCDI XPath)
-
-
 
 time.sleep(setSleepTime)    
 
